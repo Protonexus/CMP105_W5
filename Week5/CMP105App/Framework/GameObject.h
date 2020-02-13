@@ -22,6 +22,8 @@ public:
 	void setVelocity(sf::Vector2f vel);
 	void setVelocity(float vx, float vy);
 	sf::Vector2f getVelocity();
+	void setSpeed(float);
+	float getSpeed();
 
 	// Sprite state
 	bool isAlive() { return alive; };
@@ -38,10 +40,14 @@ public:
 	// Set the input component
 	void setInput(Input* in) { input = in; };
 
+	//Normalise velocity
+	sf::Vector2f normalise(sf::Vector2f);
+
 protected:
 	// Sprite properties
 	sf::Vector2f velocity;
 	bool alive;
+	float speed;
 
 	// Collision vars
 	sf::FloatRect collisionBox;

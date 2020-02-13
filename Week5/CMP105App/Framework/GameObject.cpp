@@ -37,6 +37,16 @@ sf::Vector2f GameObject::getVelocity()
 	return velocity;
 }
 
+void GameObject::setSpeed(float spd)
+{
+	speed = spd;
+}
+
+float GameObject::getSpeed()
+{
+	return speed;
+}
+
 // Returns collision box + position, giving the collision box in the correct position
 sf::FloatRect GameObject::getCollisionBox() {
 	
@@ -49,4 +59,18 @@ sf::FloatRect GameObject::getCollisionBox() {
 // e.g. checking sprite type (world, enemy, bullet etc) so response is based on that.
 void GameObject::collisionResponse(GameObject * collider)
 {
+}
+
+sf::Vector2f GameObject::normalise(sf::Vector2f dir)
+{
+
+	if ((dir.x == 0) & (dir.y == 0))
+	{
+		return dir;
+	}
+
+	dir = dir / (sqrt((dir.x * dir.x) + (dir.y * dir.y)));
+
+	return dir;
+
 }
