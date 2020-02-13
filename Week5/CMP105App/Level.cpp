@@ -19,6 +19,7 @@ Level::Level(sf::RenderWindow* hwnd, Input* in)
 	mario.setTexture(&marioTexture);
 	mario.setInput(input);
 	mario.setSpeed(50.f);
+	
 }
 
 Level::~Level()

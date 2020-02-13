@@ -15,4 +15,5 @@ protected:
 	Animation walk;
 	Animation crouch;
 	Animation stand;
+	Animation* currentAnimation;
 };

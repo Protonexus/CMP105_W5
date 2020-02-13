@@ -11,8 +11,12 @@ Mario::Mario()
 	crouch.addFrame(sf::IntRect(0, 41, 16, 20));
 	crouch.addFrame(sf::IntRect(16, 41, 16, 20));
 	crouch.setFrameSpeed(0.1);
+	crouch.setLooping(false);
 
 	stand.addFrame(sf::IntRect(0, 0, 15, 21));
+
+	currentAnimation = &stand;
+	setTextureRect(currentAnimation->getCurrentFrame());
 
 }
 
@@ -22,38 +26,43 @@ Mario::~Mario()
 
 void Mario::update(float dt)
 {
+	
+	setTextureRect(currentAnimation->getCurrentFrame());
+	currentAnimation->animate(dt);
 
 }
 
 void Mario::handleInput(float dt)
 {
+	
+
+
 	//Move Right
 	if (input->isKeyDown(sf::Keyboard::Right))
 	{
-		Mario::setVelocity(2, Mario::getVelocity().y);
+		
 		if (walk.getFlipped())
 		{
 			walk.setFlipped(false);
 		}
-		walk.animate(dt);
-		setTextureRect(walk.getCurrentFrame());
-	}
-
-	//Move Left
-	if (input->isKeyDown(sf::Keyboard::Left))
+		
+		Mario::setVelocity(2, Mario::getVelocity().y);
+		currentAnimation = &walk;
+	} else if (input->isKeyDown(sf::Keyboard::Left))
 	{
-		Mario::setVelocity(-2, Mario::getVelocity().y);
 		if (!walk.getFlipped())
 		{
 			walk.setFlipped(true);
 		}
-		walk.animate(dt);
-		setTextureRect(walk.getCurrentFrame());
-	}
+		
+		Mario::setVelocity(-2, Mario::getVelocity().y);
+		currentAnimation = &walk;
+	} else walk.reset();
 
 	//If neither left or right dir.x is 0 and set to stand
-	if (!input->isKeyDown(sf::Keyboard::Left) & !input->isKeyDown(sf::Keyboard::Right))
+	if ((!input->isKeyDown(sf::Keyboard::Left) & !input->isKeyDown(sf::Keyboard::Right))| (input->isKeyDown(sf::Keyboard::Left) & input->isKeyDown(sf::Keyboard::Right)))
 	{
+
 		if (walk.getFlipped())
 		{
 			stand.setFlipped(true);
@@ -64,8 +73,7 @@ void Mario::handleInput(float dt)
 		}
 
 		Mario::setVelocity(0, Mario::getVelocity().y);
-		stand.animate(dt);
-		setTextureRect(stand.getCurrentFrame());
+		currentAnimation = &stand;
 	}
 
 	//if down pressed, stop moving and set to crouch
@@ -81,8 +89,8 @@ void Mario::handleInput(float dt)
 		}
 
 		Mario::setVelocity(0, 0);
-		crouch.animate(dt);
-		setTextureRect(crouch.getCurrentFrame());
+		currentAnimation = &crouch;
 
 	}
+	else crouch.reset();
 }
